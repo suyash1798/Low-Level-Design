@@ -3,13 +3,19 @@ import { SingleNode } from "./Node";
 
 export class LRU {
     private list: DoublyLinkedList;
+    private map: Map<string, SingleNode>;
+    private capacity: number;
+    private size: number;
 
-    constructor(size: number) {
-        this.list = new DoublyLinkedList(size);
+    constructor(capacity: number) {
+        this.list = new DoublyLinkedList();
+        this.map = new Map();
+        this.capacity = capacity;
+        this.size = 0;
     }
 
     getValue(key: string): number | null {
-        let node: SingleNode | null = this.list.getNode(key);
+        let node: SingleNode | undefined = this.map.get(key);
 
         if (node) {
             this.list.delete(node);
@@ -22,10 +28,12 @@ export class LRU {
     }
 
     removeValue(key: string): boolean {
-        let node: SingleNode | null = this.list.getNode(key);
+        let node: SingleNode | undefined = this.map.get(key);
 
         if (node) {
+            this.map.delete(key);
             this.list.delete(node);
+            this.size--;
 
             return true;
         }
@@ -33,17 +41,25 @@ export class LRU {
         return false;
     }
 
-    addValue(key: string, value: number){
-        let node: SingleNode | null = this.list.getNode(key);
+    addValue(key: string, value: number) {
+        let node: SingleNode | undefined = this.map.get(key);
 
-        if(node === null){
+        if (node === undefined) {
             node = new SingleNode(key, value);
-        }else{
+            this.size++;
+        } else {
             node.value = value;
             this.list.delete(node);
         }
 
         this.list.addToFront(node);
+        this.map.set(key, node);
+
+        if (this.size > this.capacity) {
+            let deleteKey = this.list.deleteFromLast();
+
+            this.map.delete(deleteKey!);
+        }
     }
 }
 

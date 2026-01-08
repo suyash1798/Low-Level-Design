@@ -3,15 +3,13 @@ import { SingleNode } from "./Node";
 export class DoublyLinkedList {
     head: SingleNode;
     tail: SingleNode;
-    capacity: number;
     size: number;
 
-    constructor(capacity: number) {
+    constructor() {
         this.head = new SingleNode('', 0); // Dummy head
         this.tail = new SingleNode('', 0); // Dummy tail
         this.head.next = this.tail;
         this.tail.prev = this.head;
-        this.capacity = capacity;
         this.size = 0;
     }
 
@@ -22,10 +20,6 @@ export class DoublyLinkedList {
 
         this.head.next = node;
         this.size++;
-
-        if (this.size > this.capacity) {
-            this.delete(this.tail.prev!);
-        }
     }
 
     delete(node: SingleNode): void {
@@ -34,15 +28,13 @@ export class DoublyLinkedList {
         this.size--;
     }
 
-    getNode(key: string): SingleNode | null {
-        let node: SingleNode | null = this.head.next;
+    deleteFromLast(): string | null {
+        if(this.size === 0) return null;
 
-        while(node){
-            if(node.key === key) return node;
-            node = node.next;
-        }
+        let deleteNode = this.tail.prev!;
+        this.delete(deleteNode);
 
-        return null;
+        return deleteNode.key;
     }
 
     getSize() {

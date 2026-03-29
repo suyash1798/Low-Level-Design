@@ -39,10 +39,12 @@ while len(requests) != 0:
     else:
         elevatorService.move()
         print("Elevators moving ... \n")
-    
+
+    result = ""
+
     for id in elevatorService.elevatorsMap:
         elevator = elevatorService.elevatorsMap[id]
 
-        print(str(elevator.floor) + " ")
+        result += str(elevator.floor) + " "
     
-    print("\n")
+    print(result,"\n")

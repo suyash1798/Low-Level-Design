@@ -26,6 +26,8 @@ class Elevator:
         self.observers = []
 
     def addDestination(self, floor):
+        if floor in self.destinations:
+            return
         if floor > self.floor:
             self.destinations.add(floor)
             heapq.heappush(self.minHeap, floor)
@@ -34,7 +36,7 @@ class Elevator:
             heapq.heappush_max(self.maxHeap, floor)
 
     def move(self):
-        
+
         if self.state == ElevatorStateEnum.IDLE:
             if len(self.destinations) != 0: 
                 if len(self.maxHeap) and self.maxHeap[0] > self.floor:

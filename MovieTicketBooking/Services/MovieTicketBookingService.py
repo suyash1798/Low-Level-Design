@@ -30,7 +30,7 @@ class MovieTicketBookingService:
         self.allocationService.allocateSeats(movieId, seatIds)
     
     def bookSeat(self, movieId: int, seatId: int, userId: int):
-        time.sleep(1)
+        time.sleep(userId % 5)
         self.allocationService.allocateSeatToUser(movieId, seatId, userId)
     
     def printSeatsBookedByUser(self, userId: int):

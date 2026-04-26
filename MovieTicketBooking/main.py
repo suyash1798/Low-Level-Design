@@ -22,14 +22,17 @@ movieTicketService.addMovieToScreen(0, 1)
 for screen in movieTicketService.screenService.screens:
     print(screen.id, screen.name, screen.theaterId)
 
-user1Thread = threading.Thread(target=movieTicketService.bookSeat, args=(0, 5, 0))
-user2Thread = threading.Thread(target=movieTicketService.bookSeat, args=(0, 5, 1))
+threads: threading.Lock = []
 
-user1Thread.start()
-user2Thread.start()
+for i in range(100):
+    user1Thread = threading.Thread(target=movieTicketService.bookSeat, args=(0, 5, i))
+    threads.append(user1Thread)
 
-user1Thread.join()
-user2Thread.join()
+for th in threads:
+    th.start()
+
+for th in threads:
+    th.join()
 
 for allocation in movieTicketService.allocationService.seatAllocations:
     print(allocation.movieId, allocation.seatId, allocation.userId)

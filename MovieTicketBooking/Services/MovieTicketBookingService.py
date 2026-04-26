@@ -12,23 +12,29 @@ class MovieTicketBookingService:
     def __init__(self):
         self.movieScervice = MovieService()
         self.seatService = SeatService()
-        self.screenService = ScreenService()
-        self.theaterService = TheaterService(self.screenService, self.seatService)
+        self.screenService = ScreenService(self.seatService)
+        self.theaterService = TheaterService(self.screenService)
         self.allocationService = MovieAllocationService()
         pass
 
     def addMovie(self, name: str):
         self.movieScervice.addMovie(name)
     
-    def addTheater(self, name: str, screens: list[Screen]):
+    def addTheater(self, name: str, screens: list[list[str]]):
         self.theaterService.addTheather(name, screens)
     
     def addMovieToScreen(self, movieId: int, screenId: int):
         seatIds = self.seatService.getSeats(screenId)
 
-        self.allocationService.allocateSeats(seatIds)
+        self.allocationService.allocateSeats(movieId, seatIds)
     
-    def bookSeat(self, movieId: int, screenId: int):
+    def bookSeat(self, movieId: int, seatId: int, userId: int):
+        self.allocationService.allocateSeatToUser(movieId, seatId, userId)
+    
+    def printSeatsBookedByUser(self, userId: int):
+        seats = self.allocationService.getAllocatedSeatToUser(userId)
 
+        for seat in seats:
+            print(seat)
 
     

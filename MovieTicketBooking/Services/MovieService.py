@@ -10,12 +10,12 @@ class MovieService:
         pass
 
     def addMovie(self, name: str):
-        movie = Movie(len(self.name), name)
+        movie = Movie(len(self.movies), name)
 
         self.movies.append(movie)
         self.movieById[movie.id] = movie
     
-    def getMovies(self) -> list(Movie):
+    def getMovies(self) -> list[Movie]:
         return self.movies
     
     def getMovieById(self, id) -> Movie:

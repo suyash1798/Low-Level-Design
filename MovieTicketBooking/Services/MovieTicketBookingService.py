@@ -5,6 +5,7 @@ from MovieTicketBooking.Services.MovieService import MovieService
 from MovieTicketBooking.Services.ScreenService import ScreenService
 from MovieTicketBooking.Services.SeatService import SeatService
 from MovieTicketBooking.Services.TheaterService import TheaterService
+import time
 
 
 class MovieTicketBookingService:
@@ -29,6 +30,7 @@ class MovieTicketBookingService:
         self.allocationService.allocateSeats(movieId, seatIds)
     
     def bookSeat(self, movieId: int, seatId: int, userId: int):
+        time.sleep(1)
         self.allocationService.allocateSeatToUser(movieId, seatId, userId)
     
     def printSeatsBookedByUser(self, userId: int):

@@ -1,5 +1,6 @@
 from MovieTicketBooking.Models.Screen import Screen
 from MovieTicketBooking.Services.MovieTicketBookingService import MovieTicketBookingService
+import threading
 
 
 movieTicketService = MovieTicketBookingService()
@@ -21,7 +22,14 @@ movieTicketService.addMovieToScreen(0, 1)
 for screen in movieTicketService.screenService.screens:
     print(screen.id, screen.name, screen.theaterId)
 
-movieTicketService.bookSeat(0, 5, 0)
+user1Thread = threading.Thread(target=movieTicketService.bookSeat, args=(0, 5, 0))
+user2Thread = threading.Thread(target=movieTicketService.bookSeat, args=(0, 5, 1))
+
+user1Thread.start()
+user2Thread.start()
+
+user1Thread.join()
+user2Thread.join()
 
 for allocation in movieTicketService.allocationService.seatAllocations:
     print(allocation.movieId, allocation.seatId, allocation.userId)
